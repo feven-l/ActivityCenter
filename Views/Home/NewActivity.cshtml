@@ -1,0 +1,36 @@
+<h1 class="d-inline-block">Create an Activity</h1>
+
+<a class="float-right" asp-action="Logout">Logout</a>
+
+@model IndexViewModel
+<div class="Planform">
+    <form class="w-50 p-3"asp-action="AddActivity" asp-controller="Home" method="post">
+        <span asp-validation-for="SinglePlan.Title"></span>
+        <label asp-for="SinglePlan.Title"></label>
+        <input class="form-control" asp-for="SinglePlan.Title">
+
+        <span asp-validation-for="SinglePlan.Time"></span>
+        <label asp-for="SinglePlan.Time"></label>
+        <input class="form-control" asp-for="SinglePlan.Time">
+
+        <span asp-validation-for="SinglePlan.Date"></span>
+        <label asp-for="SinglePlan.Date"></label>
+        <input class="form-control" asp-for="SinglePlan.Date">
+
+        <span asp-validation-for="SinglePlan.Duration"></span>
+        <label asp-for="SinglePlan.Duration"></label>
+        <input class="form-control mb-4" asp-for="SinglePlan.Duration">
+
+        <select asp-for="SinglePlan.DurationDescription">
+            <Option value="Hours">Hours</Option>
+            <Option value="Minutes">Minutes</Option>
+            <Option value="Days">Days</Option>
+        </select>
+
+        <span asp-validation-for="SinglePlan.Description"></span>
+        <label asp-for="SinglePlan.Description"></label>
+        <input class="form-control mb-4" asp-for="SinglePlan.Description">
+
+        <input class="btn btn-danger" type="submit" value="Create Plan">
+    </form>
+</div>

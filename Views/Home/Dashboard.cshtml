@@ -1,0 +1,61 @@
+@model IndexViewModel
+<p>Welcome, @Model.SingleUser.FirstName!</p>
+
+<a class="float-right" asp-action="Logout">Logout</a>
+
+<div class="dashboardtable">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Activity</th>
+                <th>Date and Time</th>
+                <th>Duration</th>
+                <th>Event Coordinator</th>
+                <th>No. of Participants</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                foreach(Plan act in @Model.AllPlans)
+                {
+                    <tr>
+                        <td><a asp-action="PlanInfo" asp-route-PlanId="@act.PlanId">@act.Title</a></td>
+                        <td>@act.Date.ToString("MMM dd, yyyy") @act.Time.ToString("h:mmm ")</td>
+                        <td>@act.Duration @act.DurationDescription</td>
+                        <td>@act.Creator.FirstName</td>
+                        <td>@act.participants.Count</td>
+                        @if(Model.Notgoing.Any(w => w.PlanId == act.PlanId) && !Model.Creator.Any(w => w.PlanId == act.PlanId))
+                        { 
+                            <td><form asp-action="Join" asp-controller="Home" method="post">
+                                <input asp-for="NewAssos.PlanId" type="hidden" value="@act.PlanId">
+                                <input asp-for="NewAssos.UserId" type="hidden" value="@Model.UserId">
+                                <button class="btn btn-light" type="submit">Join</button>
+                            </form></td>
+                        }
+                        else if(Model.going.Any(w => w.PlanId == act.PlanId) && !Model.Creator.Any(w => w.PlanId == act.PlanId))
+                        {
+                            <td><form asp-action="Leave" asp-controller="Home" method="post">
+                                <input asp-for="NewAssos.PlanId" type="hidden" value="@act.PlanId">
+                                <input asp-for="NewAssos.UserId" type="hidden" value="@Model.UserId">
+                                <button class="btn btn-light" type="submit">Leave</button>
+                            </form></td>
+                        }
+                        else if(Model.Creator.Any(w => w.PlanId == act.PlanId))
+                        {
+                            <td><form asp-action="Delete" asp-controller="Home" method="post">
+                                <input asp-for="NewAssos.PlanId" type="hidden" value="@act.PlanId">
+                                <input asp-for="NewAssos.UserId" type="hidden" value="@Model.UserId">
+                                <button class="btn btn-light" type="submit">Delete</button>
+                            </form></td>
+                        }
+                    </tr>
+
+                   
+                }
+            }
+        </tbody>
+    </table>
+
+    <a class="btn btn-danger" asp-action="NewActivity">Add New Activity</a>
+</div>

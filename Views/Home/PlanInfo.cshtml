@@ -1,0 +1,47 @@
+
+@model IndexViewModel
+
+<h1 class="display-4 mb-5 d-inline-block">@Model.SinglePlan.Title</h1>
+<div class="div d-inline-block float-right">
+@if(Model.Notgoing.Any(w => w.PlanId == @Model.SinglePlan.PlanId) && !Model.Creator.Any(w => w.PlanId == @Model.SinglePlan.PlanId))
+{ 
+    <form asp-action="Join" asp-controller="Home" method="post">
+        <input asp-for="NewAssos.PlanId" type="hidden" value="@Model.SinglePlan.PlanId">
+        <input asp-for="NewAssos.UserId" type="hidden" value="@Model.UserId">
+        <button class="btn btn-light" type="submit">Join</button>
+    </form>
+}
+else if(Model.going.Any(w => w.PlanId == @Model.SinglePlan.PlanId) && !Model.Creator.Any(w => w.PlanId == @Model.SinglePlan.PlanId))
+{
+   <form asp-action="Leave" asp-controller="Home" method="post">
+        <input asp-for="NewAssos.PlanId" type="hidden" value="@Model.SinglePlan.PlanId">
+        <input asp-for="NewAssos.UserId" type="hidden" value="@Model.UserId">
+        <button class="btn btn-light" type="submit">Leave</button>
+    </form>
+}
+else if(Model.Creator.Any(w => w.PlanId == @Model.SinglePlan.PlanId))
+{
+    <form asp-action="Delete" asp-controller="Home" method="post">
+        <input asp-for="NewAssos.PlanId" type="hidden" value="@Model.SinglePlan.PlanId">
+        <input asp-for="NewAssos.UserId" type="hidden" value="@Model.UserId">
+        <button class="btn btn-light" type="submit">Delete</button>
+    </form>
+}
+</div>
+
+<h3 class="mb-4">Event Coordinator: @Model.SingleUser.FirstName</h3>
+
+<h4 class="display-5 mb-5">Description: @Model.SinglePlan.Description</h4>
+
+
+<div class="border">
+    <ul>
+        <h3>Participants:</h3>
+        @{
+            foreach(Association guest in @Model.SinglePlan.participants)
+            {
+                <li class="ml-5 list-unstyled">@guest.user.FirstName @guest.user.LastName</li>
+            }
+        }
+    </ul>
+</div>
